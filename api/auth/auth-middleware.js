@@ -16,11 +16,16 @@ module.exports = {
   }
 */
 function restricted(req, res, next) {
-  // if(req) {
-  //   next()
-  // } else {
-  //   next({ status: 401, message: 'You shall not pass!'})
-  // }
+  try {
+    if (req.session.user) {
+      next()
+    } else {
+      next({ status: 401, message: 'You shall not pass!'})
+    }
+  }
+  catch (err) {
+    next(err)
+  }
 }
 
 /*
@@ -63,7 +68,7 @@ async function checkUsernameExists(req, res, next) {
     .first()
 
     if (!exists) {
-      next({ status: 401, message: 'Invalid credentials' })
+      next({ status: 401, message: 'invalid credentials' })
     } else {
       next()
     }
@@ -93,12 +98,6 @@ function checkPasswordLength(req, res, next) {
   catch (err) {
     next(err)
   }
-
-//  if(req) {
-//    next()
-//  } else {
-//    
-//  }
 }
 
 // Don't forget to add these to the `exports` object so they can be required in other modules

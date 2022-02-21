@@ -24,6 +24,18 @@ const server = express();
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
+server.use(session({
+  name: 'chocolatechip',
+  secret:'ponies and unicorns on rainbows',
+  cookie: {
+    maxAge: 1000 * 60 * 60,
+    secure: false,
+    httpOnly: true,
+  },
+  rolling: true,
+  resave: false,
+  saveUninitialized: false
+}))
 
 server.use('/api/users', usersRouter);
 server.use('/api/auth', authRouter);
